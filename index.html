@@ -3,7 +3,7 @@
     <head>
     <title>National Parks Quick Info</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
@@ -12,8 +12,8 @@
         <div class="container">
             <h1 class="search">Search for a National Park:</h1>
             <form>
-                <label for="js-parksearch">National Park:</label>
-                <input type="text" id="js-parksearch" placeholder="Yellowstone" required>
+                <label for="js-park-name">National Park:</label>
+                <input type="text" id="js-park-name" placeholder="Yellowstone" required>
                 <input type="submit" value="Search">
             </form>
             <section class="js-results">
@@ -22,7 +22,10 @@
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="parks-list.js"></script>
+        <script src="api-keys.js"></script>
         <script src="index.js"></script>
+        
     </main>
 </body>
 

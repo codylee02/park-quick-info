@@ -1,6 +1,7 @@
 'use strict';
 
-const baseURL = `https://developer.nps.gov/api/v1/parks?`;
+const baseURL = `https://developer.nps.gov/api/v1/parks`;
+let parkName = "";
 
 function clearResultsAndForm() {
 

@@ -17,17 +17,18 @@ function displayParkAlterts() {
 
 }
 
-function displayParkInfo() {
+function displayParkInfo(responseJson) {
+    console.log(responseJson)
+    $(".js-results").html(
+        
+        //display park name, park descriptiion, recent alerts
 
-    //display
-
-
-    //get latLon from responseJson
+        );
 }
 
 function getWeatherInfo(resonseJson) {
     //latLon from responseJson
-    const latLon = null;
+    //const latLon = null;
     //get 7 day forecast
    
     
@@ -50,20 +51,21 @@ function getWeatherInfo(resonseJson) {
 // }
 
 function makeQuery(params) {
-
+    const queryItems = Object.keys(params).map(key => `${key}=${params[key]}`)
+    return queryItems.join("&");
 }
 
 function getParkInfoJson() {
 
+    let parkCode = Object.keys(parksListObj).find(key => parksListObj[key] === parkName);
+
     const params = {
-        parkCode: "",
-        api_key: npsAPI,
-        limit: 5
+        parkCode,
+        api_key: npsAPI
     }
 
     const queryString = makeQuery(params)
     const url = baseURL + "?" + queryString;
-
 
     fetch(url)
         .then(response => {
@@ -73,7 +75,7 @@ function getParkInfoJson() {
             throw new Error(response.statusText);
         })
         .then(responseJson => displayParkInfo(responseJson))
-        .then(responseJson => getWeatherInfo(responseJson))
+        //.then(responseJson => getWeatherInfo(responseJson))
         .catch (err => {
             $(".results").text(`Something went wrong: ${err.message}`);
         });
@@ -86,9 +88,8 @@ function watchForm() {
 
         parkName = $("#js-park-name").val();
         
-        console.log(parkName);
         clearResultsAndForm();
-        //getParkInfoJson();
+        getParkInfoJson();
 
     });
 }

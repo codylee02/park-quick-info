@@ -20,7 +20,7 @@ function displayWeatherInfo(responseJson) {
 
 function displayParkInfo(responseJson) {
     //display park name & park descriptiion
-    $(".js-results").html(
+    $(".js-results").append(
         `<section><h2>${parkName}</h2>
         <p>${responseJson.data[0].description}</p>
         </section>`);
@@ -49,24 +49,61 @@ function makeQuery(params) {
     return queryItems.join("&");
 }
 
-function displayParkAlerts() {
+function displayParkAlerts(alertsJson) {
     //if no alerts, say there are no active alerts for this park
-  
+  console.log(alertsJson);
+  console.log(alertsJson.total);
+
+  //if no alerts, let user know
+    if (alertsJson.total == "0") {
+        $(".js-results").append(
+            `<section>
+                <h3>Alerts:</h3>
+                <p>There are no current alerts.</p>
+            </section>`);
+    } else {
+    let alertsString = "";
+        console.log("else ran");
+        //loop through the array to display alerts
+        for (let i = 0; i < alertsJson.data.length; i++) {
+            alertsString += `<h4>${alertsJson.data[i].title}</h4>
+                <p>${alertsJson.data[i].description}</p>`
+        }
+        $(".js-results").append(`<section><h3>Alerts:</h3>${alertsString} </section>`);
+    };
   }
 
 function getParkAlertsJson() {
-    
-}
-
-function getParkInfoJson() {
-
-    parkCode = Object.keys(parksListObj).find(key => parksListObj[key] === parkName);
-    const baseURL = `https://developer.nps.gov/api/v1/parks`;
     const params = {
         parkCode,
         api_key: npsAPI
     }
+    const baseURL = `https://developer.nps.gov/api/v1/alerts`;
+    const queryString = makeQuery(params)
+    const url = baseURL + "?" + queryString;
 
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(alertsJson => displayParkAlerts(alertsJson))
+        .catch (err => {
+            $(".results").text(`Something went wrong: ${err.message}`);
+        });
+        
+}
+
+function getParkInfoJson() {
+
+    
+    const params = {
+        parkCode,
+        api_key: npsAPI
+    }
+    const baseURL = `https://developer.nps.gov/api/v1/parks`;
     const queryString = makeQuery(params)
     const url = baseURL + "?" + queryString;
 
@@ -88,9 +125,10 @@ function watchForm() {
     //watch the search form
     $("form").submit (e => {
         e.preventDefault();
-        
+
         //set the park name to new global variable
         parkName = $("#js-park-name").val();
+        parkCode = Object.keys(parksListObj).find(key => parksListObj[key] === parkName);
         
         clearResultsAndForm();
         getParkInfoJson();

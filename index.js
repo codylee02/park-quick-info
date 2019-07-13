@@ -1,7 +1,7 @@
 'use strict';
 
-const baseURL = `https://developer.nps.gov/api/v1/parks`;
 let parkName = "";
+let parkCode = "";
 
 function clearResultsAndForm() {
 
@@ -12,15 +12,12 @@ function displayWeatherInfo() {
     
 }
 
-function displayParkAlterts() {
-  //if no alerts, say there are no active alerts for this park
-
-}
-
 function displayParkInfo(responseJson) {
     console.log(responseJson)
     $(".js-results").html(
-        
+        `<section><h2>${parkName}</h2>
+        <p>${responseJson.data[0].description}</p>
+        </section>`
         //display park name, park descriptiion, recent alerts
 
         );
@@ -55,10 +52,19 @@ function makeQuery(params) {
     return queryItems.join("&");
 }
 
+function displayParkAlerts() {
+    //if no alerts, say there are no active alerts for this park
+  
+  }
+
+function getParkAlertsJson() {
+    
+}
+
 function getParkInfoJson() {
 
-    let parkCode = Object.keys(parksListObj).find(key => parksListObj[key] === parkName);
-
+    parkCode = Object.keys(parksListObj).find(key => parksListObj[key] === parkName);
+    const baseURL = `https://developer.nps.gov/api/v1/parks`;
     const params = {
         parkCode,
         api_key: npsAPI
@@ -90,7 +96,7 @@ function watchForm() {
         
         clearResultsAndForm();
         getParkInfoJson();
-
+        getParkAlertsJson();
     });
 }
 

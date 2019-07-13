@@ -7,30 +7,27 @@ function clearResultsAndForm() {
 
 }
 
-function displayWeatherInfo() {
-    //display 7 day forecast to user
+function displayWeatherInfo(responseJson) {
+    //display NPS weather Info
+
+    $(".js-results").append(
+        `<section>
+        <h3>How's the weather?</h3>
+        <p>${responseJson.data[0].weatherInfo}</p>
+        </section>`);
     
 }
 
 function displayParkInfo(responseJson) {
-    console.log(responseJson)
+    //display park name & park descriptiion
     $(".js-results").html(
         `<section><h2>${parkName}</h2>
         <p>${responseJson.data[0].description}</p>
-        </section>`
-        //display park name, park descriptiion, recent alerts
-
-        );
+        </section>`);
+    //responseJson returned so that displayWeatherInfo can use it
+    return responseJson;
 }
 
-function getWeatherInfo(resonseJson) {
-    //latLon from responseJson
-    //const latLon = null;
-    //get 7 day forecast
-   
-    
-    displayWeatherInfo();
-}
 
 // function  getParkInfo(responseJson) {
 //     //get the park info that the user searched for from NPS server
@@ -81,7 +78,7 @@ function getParkInfoJson() {
             throw new Error(response.statusText);
         })
         .then(responseJson => displayParkInfo(responseJson))
-        //.then(responseJson => getWeatherInfo(responseJson))
+        .then(responseJson => displayWeatherInfo(responseJson))
         .catch (err => {
             $(".results").text(`Something went wrong: ${err.message}`);
         });
@@ -91,7 +88,8 @@ function watchForm() {
     //watch the search form
     $("form").submit (e => {
         e.preventDefault();
-
+        
+        //set the park name to new global variable
         parkName = $("#js-park-name").val();
         
         clearResultsAndForm();

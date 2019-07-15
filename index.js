@@ -4,45 +4,31 @@ let parkName = "";
 let parkCode = "";
 
 function clearResultsAndForm() {
-
+    $(".park-info").html("");
+    $(".park-alerts").html("");
+    $(".weather-info").html("");
+    $("#js-park-name").val("");
+    $(".park-pictures").html("");
 }
 
 function displayWeatherInfo(responseJson) {
     //display NPS weather Info
-
-    $(".js-results").append(
-        `<section>
+    $(".weather-info").append(
+        `
         <h3>How's the weather?</h3>
         <p>${responseJson.data[0].weatherInfo}</p>
-        </section>`);
-    
+        `);
+    return responseJson;
 }
 
 function displayParkInfo(responseJson) {
     //display park name & park descriptiion
-    $(".js-results").append(
-        `<section><h2>${parkName}</h2>
+    $(".park-info").append(
+        `<h2>${parkName}</h2>
         <p>${responseJson.data[0].description}</p>
-        </section>`);
-    //responseJson returned so that displayWeatherInfo can use it
+        `);
     return responseJson;
 }
-
-
-// function  getParkInfo(responseJson) {
-//     //get the park info that the user searched for from NPS server
-//     //search for the park name through the object. loop through and then pull the pertinent info from that object
-//     const latLon = 0;//parks lat and lon
-//     const params = {
-//         parkCode: "",
-//         api_key: npsAPI
-//     }
-//     console.log(getParkInfoRunning);
-//     console.log(responseJson);
-    
-    
-//     //getWeatherInfo(latLon);
-// }
 
 function makeQuery(params) {
     const queryItems = Object.keys(params).map(key => `${key}=${params[key]}`)
@@ -51,25 +37,20 @@ function makeQuery(params) {
 
 function displayParkAlerts(alertsJson) {
     //if no alerts, say there are no active alerts for this park
-  console.log(alertsJson);
-  console.log(alertsJson.total);
-
-  //if no alerts, let user know
-    if (alertsJson.total == "0") {
-        $(".js-results").append(
-            `<section>
+    if (alertsJson.total === "0") {
+        $(".park-alerts").append(
+            `
                 <h3>Alerts:</h3>
                 <p>There are no current alerts.</p>
-            </section>`);
+            `);
     } else {
     let alertsString = "";
-        console.log("else ran");
         //loop through the array to display alerts
         for (let i = 0; i < alertsJson.data.length; i++) {
             alertsString += `<h4>${alertsJson.data[i].title}</h4>
                 <p>${alertsJson.data[i].description}</p>`
         }
-        $(".js-results").append(`<section><h3>Alerts:</h3>${alertsString} </section>`);
+        $(".park-alerts").append(`<h3>Alerts:</h3>${alertsString}`);
     };
   }
 
@@ -91,9 +72,21 @@ function getParkAlertsJson() {
         })
         .then(alertsJson => displayParkAlerts(alertsJson))
         .catch (err => {
-            $(".results").text(`Something went wrong: ${err.message}`);
+            $(".park-info").text(`Something went wrong: ${err.message}`);
         });
         
+}
+
+function displayParkPictures(responseJson) {
+    //copuld later be better refactored with a loop... or .reduce
+    $(".park-pictures").append(
+        `
+        <img src="${responseJson.data[0].images[0].url}" alt="${responseJson.data[0].images[0].title}">
+        <img src="${responseJson.data[0].images[1].url}" alt="${responseJson.data[0].images[1].title}">
+        <img src="${responseJson.data[0].images[2].url}" alt="${responseJson.data[0].images[2].title}">
+        <img src="${responseJson.data[0].images[3].url}" alt="${responseJson.data[0].images[3].title}">
+        `);
+
 }
 
 function getParkInfoJson() {
@@ -101,11 +94,13 @@ function getParkInfoJson() {
     
     const params = {
         parkCode,
-        api_key: npsAPI
+        api_key: npsAPI,
+        fields: 'images'
     }
     const baseURL = `https://developer.nps.gov/api/v1/parks`;
     const queryString = makeQuery(params)
     const url = baseURL + "?" + queryString;
+
 
     fetch(url)
         .then(response => {
@@ -114,10 +109,12 @@ function getParkInfoJson() {
             }
             throw new Error(response.statusText);
         })
+        
         .then(responseJson => displayParkInfo(responseJson))
         .then(responseJson => displayWeatherInfo(responseJson))
+        .then(responseJson => displayParkPictures(responseJson))
         .catch (err => {
-            $(".results").text(`Something went wrong: ${err.message}`);
+            $(".park-info").text(`Something went wrong: ${err.message}`);
         });
 }
 
@@ -129,7 +126,7 @@ function watchForm() {
         //set the park name to new global variable
         parkName = $("#js-park-name").val();
         parkCode = Object.keys(parksListObj).find(key => parksListObj[key] === parkName);
-        
+
         clearResultsAndForm();
         getParkInfoJson();
         getParkAlertsJson();

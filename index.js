@@ -77,15 +77,24 @@ function getParkAlertsJson() {
         
 }
 
+function makePictureString(responseJson) {
+    let pictureString = "";
+    for (let i = 0; i < responseJson.data[0].images.length; i++) {
+        if (i >= 4) {
+            break;
+        } else {
+            pictureString += `<img src="${responseJson.data[0].images[i].url}" alt="${responseJson.data[0].images[i].title}">`;
+        };
+    };
+    return pictureString;
+};
+
 function displayParkPictures(responseJson) {
-    //copuld later be better refactored with a loop... or .reduce
-    $(".park-pictures").append(
-        `
-        <img src="${responseJson.data[0].images[0].url}" alt="${responseJson.data[0].images[0].title}">
-        <img src="${responseJson.data[0].images[1].url}" alt="${responseJson.data[0].images[1].title}">
-        <img src="${responseJson.data[0].images[2].url}" alt="${responseJson.data[0].images[2].title}">
-        <img src="${responseJson.data[0].images[3].url}" alt="${responseJson.data[0].images[3].title}">
-        `);
+    //copuld later be better refactored with a loop... or .reduce 
+    makePictureString(responseJson)
+        
+    $(".park-pictures").append(makePictureString(responseJson));
+    return responseJson;
 
 }
 
@@ -113,6 +122,7 @@ function getParkInfoJson() {
         .then(responseJson => displayParkInfo(responseJson))
         .then(responseJson => displayWeatherInfo(responseJson))
         .then(responseJson => displayParkPictures(responseJson))
+
         .catch (err => {
             $(".park-info").text(`Something went wrong: ${err.message}`);
         });
@@ -129,7 +139,7 @@ function watchForm() {
 
         clearResultsAndForm();
         getParkInfoJson();
-        getParkAlertsJson();
+        //getParkAlertsJson();
     });
 }
 

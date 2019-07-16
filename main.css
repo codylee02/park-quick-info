@@ -8,6 +8,26 @@ body {
     line-height: 1.5;
 }
 
+.container {
+    padding-top: 82px;
+}
+
+header {
+    position: fixed;
+    color: white;
+    top: 0;
+    left: 0;
+    margin: 0px auto;
+    background: black;
+    width: 100%;
+}
+
+header .title {
+    margin: 2px;
+    text-align: center;
+    line-height: 1.2;
+}
+
 h2, h3 {
     text-decoration: underline;
 }
@@ -17,13 +37,108 @@ section {
     padding: 5px 2.5%;
 }
 
+.park-pictures {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
 .park-pictures img {
-    max-width: 45%;
-    max-height: 400px;
+    object-fit: contain;
+    max-width: 48%;
+    
+    margin: 1%;
 }
 
 input[type=text] {
-    width: 80%;
-    border: solid 1px gray;
-    padding: 5px;
+    width: 77%;
+    border: solid 1px black;
+    padding: 10px 5px;
+}
+
+input[type=submit] {
+    width: 23%;
+    position: absolute;
+    bottom: 1px;
+    font-size: 1em;
+    color: white;
+    font-weight: 700;
+    background: rgb(50, 50, 50);
+    border: 1px solid rgb(50, 50, 50);
+    padding: 5px 3%;
+}
+
+@media only screen and (min-width: 768px) {
+
+    header .title {
+        text-align: left;
+    }
+
+    section {
+        display: inline-block;
+        width: 50%;
+        
+    }
+
+    .park-title {
+        width: 100%;
+        margin: 0;
+    }
+
+    .park-title h2 {
+        margin: 0;
+    }
+
+    .park-info {
+        float: left;
+        margin-top: 0;
+    }
+
+    .park-info h2 {
+        position: relative;
+        margin-top: 0;
+        width: 100%;
+    }
+
+    .park-pictures {
+        float: right;
+    }
+
+    .park-pictures img {
+        max-width: 90%;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .park-pictures img {
+        max-width: 45%;
+    }
+
+
+    header .title {
+        width: 40%;
+    }
+
+    header form {
+        width: 50%;
+        position: fixed;
+        top: 0;
+        right: 0;
+
+    }
+    
+    input[type=submit] {
+        font-size: 20px;
+        width: 15%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 47px;
+        
+    }
+
+    input[type=text] {
+        width: 75%;
+        font-size: 20px;
+    }
 }

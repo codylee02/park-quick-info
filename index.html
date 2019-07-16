@@ -8,28 +8,21 @@
 </head>
 
 <body>
-    <main role="main">
-        <div class="container">
-            <h1 class="search">Quick Park Info</h1>
-            <form>
+    <header>
+        <h1 class="title">Quick Park Info</h1>
+        <form>
                 <input type="text" placeholder="Search for a National Park" id="js-park-name" name='js-park-name' list="js-park-list">
-                <datalist id="js-park-list">
-                    
-                </datalist>
+                <datalist id="js-park-list"></datalist>
             <input type="submit" value="Search">
             </form>
-            <section class="park-info">
+    </header>
 
-            </section>
-            <section class="park-pictures">
-                
-            </section>
-            <section class="weather-info">
-
-            </section>
-            <section class="park-alerts">
-
-            </section>
+    <main role="main">
+        <div class="container">
+            <section class="park-info"></section>
+            <section class="park-pictures"></section>
+            <section class="weather-info"></section>
+            <section class="park-alerts"></section>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

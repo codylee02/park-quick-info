@@ -9,6 +9,7 @@ function clearResultsAndForm() {
     $(".weather-info").html("");
     $("#js-park-name").val("");
     $(".park-pictures").html("");
+    $(".park-title").html("");
 }
 
 function displayWeatherInfo(responseJson) {
@@ -24,9 +25,9 @@ function displayWeatherInfo(responseJson) {
 function displayParkInfo(responseJson) {
     //display park name & park descriptiion
     $(".park-info").append(
-        `<h2>${parkName}</h2>
-        <p>${responseJson.data[0].description}</p>
+        `<p>${responseJson.data[0].description}</p>
         `);
+    $(".park-title").append(`<h2>${parkName}</h2>`);
     return responseJson;
 }
 
@@ -134,6 +135,7 @@ function watchForm() {
         e.preventDefault();
 
         //set the park name to new global variable
+        //parkName = "Acadia National Park";
         parkName = $("#js-park-name").val();
         parkCode = Object.keys(parksListObj).find(key => parksListObj[key] === parkName);
 

@@ -21,3 +21,9 @@ section {
     max-width: 45%;
     max-height: 400px;
 }
+
+input[type=text] {
+    width: 80%;
+    border: solid 1px gray;
+    padding: 5px;
+}

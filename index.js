@@ -139,7 +139,7 @@ function watchForm() {
 
         clearResultsAndForm();
         getParkInfoJson();
-        //getParkAlertsJson();
+        getParkAlertsJson();
     });
 }
 

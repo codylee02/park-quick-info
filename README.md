@@ -13,7 +13,7 @@ Technology Used:
 
 **The user will need to get their own API key from here: https://www.nps.gov/subjects/developer/get-started.htm
 
-To run the app locally, create a new variable called npsAPI with your API key as the value in a string.
+Download and run the app locally, at the top of index.js, add a constant variable called npsAPI, put your API key as the value in a string.
   Ex: const npsAPI = "your-key-here";
 
 

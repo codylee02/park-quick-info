@@ -18,4 +18,4 @@ Download and run the app locally, at the top of index.js, add a constant variabl
 
 
 Screenshot: 
-  <img src="screen-shot-1.png" alt="screenshot of Quick Park Info">
+  <img src="images/screen-shot-1.png" alt="screenshot of Quick Park Info">

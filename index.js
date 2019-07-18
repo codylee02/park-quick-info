@@ -1,5 +1,6 @@
 'use strict';
 
+const npsAPI = "t0uHYkBfFVivZk7jJARtfvHNFV0OGY8wGAmnrbfZ";
 let parkName = "";
 let parkCode = "";
 
